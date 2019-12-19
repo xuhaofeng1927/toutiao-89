@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     submitForm () {
-      if (this.ruleForm.mobile === '' || this.$slotsruleForm.code === '') {
+      if (this.ruleForm.mobile === '' || this.ruleForm.code === '') {
         this.$message.error('手机号或验证码不能为空')
       } else {
         this.$refs.myForm.validate((isOk) => {
