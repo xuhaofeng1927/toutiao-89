@@ -57,9 +57,18 @@ export default {
   },
   methods: {
     submitForm () {
-      this.$refs.myForm.validate(function (isOk) {
+      this.$refs.myForm.validate((isOk) => {
         if (isOk) {
-          console.log('前端校验成功，请前往后端请求代码')
+          // console.log('前端校验成功，请前往后端请求代码')
+          this.$axios({
+            url: 'authorizations',
+            method: 'post',
+            data: this.ruleForm
+          }).then((result) => {
+            window.localStorage.setItem('user-token', result.data.data.token)
+          }).catch((error) => {
+            console.log(error)
+          })
         }
       })
     }
