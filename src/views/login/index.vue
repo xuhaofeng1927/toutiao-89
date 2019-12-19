@@ -17,7 +17,7 @@
              <el-checkbox  v-model='ruleForm.checket'>我已阅读并同意协议和隐私条款</el-checkbox>
         </el-form-item>
          <el-form-item>
-          <el-button style="width:100%" type="primary" @click='submitForm()'>登录</el-button>
+          <el-button style="width:100%" type="primary"   @click='submitForm'>登录</el-button>
         </el-form-item>
 
       </el-form>
@@ -36,12 +36,12 @@ export default {
       },
       loginRules: {
         mobile: [
-          { required: true, message: '请输入手机号' },
-          { pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确' }
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }
         ],
         code: [
-          { required: true, message: '请输入验证码' },
-          { pattern: /^\d{6}$/, message: '验证码格式不正确' }
+          { required: true, message: '请输入验证码', trigger: 'blur' },
+          { pattern: /^\d{6}$/, message: '验证码格式不正确', trigger: 'blur' }
         ],
         checket: [{
           validator: function (a, b, c) {
@@ -57,20 +57,32 @@ export default {
   },
   methods: {
     submitForm () {
-      this.$refs.myForm.validate((isOk) => {
-        if (isOk) {
+      if (this.ruleForm.mobile === '' || this.$slotsruleForm.code === '') {
+        this.$message.error('手机号或验证码不能为空')
+      } else {
+        this.$refs.myForm.validate((isOk) => {
+          if (isOk) {
           // console.log('前端校验成功，请前往后端请求代码')
-          this.$axios({
-            url: 'authorizations',
-            method: 'post',
-            data: this.ruleForm
-          }).then((result) => {
-            window.localStorage.setItem('user-token', result.data.data.token)
-          }).catch((error) => {
-            console.log(error)
-          })
-        }
-      })
+            this.$axios({
+              url: 'authorizations',
+              method: 'post',
+              data: this.ruleForm
+            }).then((result) => {
+            // 缓存令牌
+              window.localStorage.setItem('user-token', result.data.data.token)
+              // 成功跳转到主页
+              this.$router.push('/')
+            }).catch(() => {
+            // console.log(error)
+            // 不成功警告错误信息
+              this.$message({
+                message: '手机号或验证码输入错误',
+                type: 'warning'
+              })
+            })
+          }
+        })
+      }
     }
   }
 
