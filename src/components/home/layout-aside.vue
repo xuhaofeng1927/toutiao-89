@@ -2,15 +2,15 @@
   <div class="layoutAside">
     <div class="logo">
       <a href>
-        <img src="../assets/img/logo_admin.png" alt />
+        <img src="../../assets/img/logo_admin.png" alt />
       </a>
     </div>
-    <el-menu
+    <el-menu background-color="#353b4e"
+      text-color="#adafb5"
+      active-text-color='#ffd04b'
       style=" width: 230px;
             border-right:none;"
-      background-color="#353b4e"
-      text-color="#adafb5"
-      active-text-color="#ffd04b"
+
     >
       <el-menu-item>首页</el-menu-item>
       <el-submenu index=1>
@@ -42,7 +42,7 @@ export default {}
 .layoutAside {
   background-color: #323745;
   .logo {
-      text-align: center;
+    text-align: center;
     background-color: #2e2f32;
     padding: 10px 0;
     img {

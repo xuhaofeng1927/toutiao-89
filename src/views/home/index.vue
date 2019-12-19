@@ -4,7 +4,9 @@
       <layoutAside></layoutAside>
     </el-aside>
     <el-container>
-      <el-header>头部容器</el-header>
+      <el-header>
+        <layoutHeade></layoutHeade>
+      </el-header>
       <el-main>
         <h6>主要内容</h6>
         <router-view>二级路由</router-view>
@@ -14,10 +16,12 @@
 </template>
 
 <script>
-import layoutAside from '../../components/layout-aside'
+import layoutAside from '../../components/home/layout-aside'
+import layoutHeade from '../../components/home/layout-heade'
 export default {
   components: {
-    layoutAside
+    layoutAside,
+    layoutHeade
   }
 }
 </script>
