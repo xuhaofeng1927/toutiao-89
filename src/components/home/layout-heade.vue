@@ -10,10 +10,14 @@
       <!-- 右侧 -->
       <el-col class='right' :span="4">
           <el-row type='flex' justify="end" align="middle">
-            <img src="../../assets/img/header.jpg" alt="">
+              <!-- 这里personinfo.photo是变量所以要加:或v-bind -->
+              <!-- <img src="../../assets/img/header.jpg" alt=""> -->
+            <!-- <img :src="personinfo.photo" alt=""> -->
+            <img :src="personinfo.photo?personinfo.photo: defaultImg" alt="">
              <!-- 下拉菜单 -->
              <el-dropdown>
-                 <span>山隔壁还是山</span>
+                 <!-- <span>山隔壁还是山</span> -->
+                 <span>{{personinfo.name}}</span>
                  <!-- 下拉菜单  具名插槽 -->
                  <el-dropdown-menu slot="dropdown">
                      <!-- 下拉内容 -->
@@ -30,6 +34,24 @@
 
 <script>
 export default {
+  data () {
+    return {
+      personinfo: {},
+      defaultImg: require('../../assets/img/header.jpg')
+    }
+  },
+  created () {
+    let token = window.localStorage.getItem('user-token')// 获取本地存储中的地址
+    console.log(token)
+
+    this.$axios({
+      url: '/user/profile',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((result) => { this.personinfo = result.data.data }
+    )
+  }
 }
 </script>
 
