@@ -8,7 +8,6 @@
         <layoutHeade></layoutHeade>
       </el-header>
       <el-main>
-        <h6>主要内容</h6>
         <!-- 二级路由 -->
         <router-view></router-view>
       </el-main>

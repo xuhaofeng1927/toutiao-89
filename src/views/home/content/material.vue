@@ -1,7 +1,9 @@
 <template>
-    <div>
-        <h1>This is publish</h1>
-    </div>
+  <div>
+      <h1>
+          This is material
+      </h1>
+  </div>
 </template>
 
 <script>

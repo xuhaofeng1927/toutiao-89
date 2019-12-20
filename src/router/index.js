@@ -3,6 +3,17 @@ import VueRouter from 'vue-router'
 import Home from '../views/home'
 import Login from '../views/login'
 
+// 二级路由引入
+// content
+import Publish from '../views/home/content/publish'
+import Aarticles from '../views/home/content/articles'
+import Comment from '../views/home/content/comment'
+import Material from '../views/home/content/material'
+// fans
+import FansImg from '../views/home/fans/fansImg'
+import FansPaint from '../views/home/fans/fansPaint'
+import FansGen from '../views/home/fans/fansGen'
+import FansList from '../views/home/fans/fansList'
 Vue.use(VueRouter)
 
 const routes = [
@@ -18,9 +29,39 @@ const routes = [
         path: '',
         redirect: '/home/publish'
       },
+      // content
       {
         path: 'publish',
-        component: Home
+        component: Publish
+      },
+      {
+        path: 'articles',
+        component: Aarticles
+      },
+      {
+        path: 'comment',
+        component: Comment
+      },
+      {
+        path: 'material',
+        component: Material
+      },
+      // fans
+      {
+        path: 'fansImg',
+        component: FansImg
+      },
+      {
+        path: 'fansPaint',
+        component: FansPaint
+      },
+      {
+        path: 'fansGen',
+        component: FansGen
+      },
+      {
+        path: 'fansList',
+        component: FansList
       }
     ]
   },
