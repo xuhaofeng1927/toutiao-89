@@ -71,8 +71,9 @@ export default {
             data: this.ruleForm
           })
             .then(result => {
+              // console.log(result.data.token)
               // 缓存令牌
-              window.localStorage.setItem('user-token', result.data.data.token)
+              window.localStorage.setItem('user-token', result.data.token)
               // 成功跳转到主页
               this.$router.push('/')
             })
