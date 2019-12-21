@@ -42,7 +42,7 @@ export default {
   },
   created () {
     let token = window.localStorage.getItem('user-token') // 获取本地存储中的地址
-    console.log(token)
+    // console.log(token)
 
     this.$axios({
       url: '/user/profile',
