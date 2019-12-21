@@ -2,7 +2,7 @@
 import router from '../router'
 router.beforeEach(function (to, from, next) {
   // 拦截谁判断拦截地址
-  if (to.path !== '/login') {
+  if (to.path.startsWith('/home')) {
     let token = window.localStorage.getItem('user-token')
     if (token) {
       next()

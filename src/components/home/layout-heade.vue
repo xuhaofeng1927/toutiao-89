@@ -41,14 +41,11 @@ export default {
     }
   },
   created () {
-    let token = window.localStorage.getItem('user-token') // 获取本地存储中的地址
+    // let token = window.localStorage.getItem('user-token') // 获取本地存储中的地址
     // console.log(token)
 
     this.$axios({
-      url: '/user/profile',
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      url: '/user/profile'
     }).then(result => {
       this.personinfo = result.data.data
     })
