@@ -77,14 +77,6 @@ export default {
               // 成功跳转到主页
               this.$router.push('/')
             })
-            .catch(() => {
-              // console.log(error)
-              // 不成功警告错误信息
-              this.$message({
-                message: '手机号或验证码输入错误',
-                type: 'warning'
-              })
-            })
         } else {
           if (this.ruleForm.mobile === '' || this.ruleForm.code === '') { this.$message.error('手机号或验证码不能为空') }
         }
