@@ -66,6 +66,7 @@ export default {
 <style lang='less' scoped>
 .layout-header {
   height: 60px;
+  border-bottom: 1px solid #ccc;
   .left {
     font-size: 18px;
     .title {

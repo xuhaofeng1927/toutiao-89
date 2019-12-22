@@ -7,7 +7,7 @@ import Login from '../views/login'
 // content
 import Publish from '../views/home/content/publish'
 import Aarticles from '../views/home/content/articles'
-import Comment from '../views/home/content/comment'
+// import Comment from '../views/home/content/comment'
 import Material from '../views/home/content/material'
 // fans
 import FansImg from '../views/home/fans/fansImg'
@@ -40,7 +40,7 @@ const routes = [
       },
       {
         path: 'comment',
-        component: Comment
+        component: () => import('../views/home/content/comment') // 按需加载
       },
       {
         path: 'material',

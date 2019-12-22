@@ -23,7 +23,7 @@ axios.interceptors.response.use(function (res) {
 }, function (error) {
   // 错误执行代码
   console.log(error)
-  let status = error.response.status// 获取状态
+  let status = error.response.status // 获取状态
   let message = ''// 提示信息
 
   switch (status) {
@@ -32,6 +32,7 @@ axios.interceptors.response.use(function (res) {
       break
     case 403:
       message = '手机号或者验证码错误'
+      window.localStorage.removeItem('user-token') // 强制删除命令
       router.push('/login') // 强制回登录
       break
     case 401:
@@ -43,6 +44,7 @@ axios.interceptors.response.use(function (res) {
       break
     case 404:
       message = '手机号不正确'
+      router.push('/login') // 强制回登录
       break
     default:
       break
