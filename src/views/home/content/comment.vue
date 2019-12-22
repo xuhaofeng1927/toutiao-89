@@ -11,7 +11,7 @@
       <el-table-column prop label="操作">
         <template slot-scope="obj">
           <el-button type="text">修改</el-button>
-          <el-button type="text">{{  obj.row.comment_status ? '关闭评论' : '打开评论'  }}</el-button>
+          <el-button type="text" @click='openOrclose(obj.row)'>{{  obj.row.comment_status ? '关闭评论' :  '打开评论' }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -26,6 +26,32 @@ export default {
     }
   },
   methods: {
+    // 打开/关闭评论
+    openOrclose (row) {
+      // row 当前行数据
+      let messStatus = row.comment_status ? '关闭' : '打开' // 根据状态取反
+      this.$confirm(`您是否确定要${messStatus}评论吗`)
+        .then(() => {
+          // alert(1)
+          this.$axios({
+            url: '/comments/status',
+            method: 'put',
+            params: {
+              article_id: row.id
+            },
+            data: {
+              allow_comment: !row.comment_status // 再次取反修改boolern值
+            }
+          })
+          this.$message({
+            type: 'success',
+            message: '操作成功'
+          })
+          this.getComment()
+        })
+    },
+
+    // 获取评论数据
     getComment () {
       this.$axios({
         url: '/articles',
@@ -34,14 +60,21 @@ export default {
         }
       }).then(result => {
         this.tableListData = result.data.results
-        console.log(this.tableListData)
+        // console.log(this.tableListData)
       })
     },
+
+    // table表格不识别boolearn值  formatter 格式化内容
     formatterJudge (row, column, cellValue, index) {
+      // row 当前行数据
+      // column 当前列数据
+      // cellValue 当前单元格的值
+      // index 当前下标
       return cellValue ? '正常' : '关闭'
     }
   },
   created () {
+    // 实例创建后调用方法
     this.getComment()
   }
 }

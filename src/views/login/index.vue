@@ -66,7 +66,7 @@ export default {
         if (isOk) {
           // console.log('前端校验成功，请前往后端请求代码')
           this.$axios({
-            url: 'authorizations',
+            url: '/authorizations',
             method: 'post',
             data: this.ruleForm
           })
