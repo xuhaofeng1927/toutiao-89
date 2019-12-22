@@ -30,7 +30,7 @@ export default {
     openOrclose (row) {
       // row 当前行数据
       let messStatus = row.comment_status ? '关闭' : '打开' // 根据状态取反
-      this.$confirm(`您是否确定要${messStatus}评论吗`)
+      this.$confirm(`您是否确定要${messStatus}评论吗`)// primise
         .then(() => {
           // alert(1)
           this.$axios({
@@ -42,12 +42,13 @@ export default {
             data: {
               allow_comment: !row.comment_status // 再次取反修改boolern值
             }
+          }).then(result => {
+            this.$message({
+              type: 'success',
+              message: '操作成功'
+            })
+            this.getComment()
           })
-          this.$message({
-            type: 'success',
-            message: '操作成功'
-          })
-          this.getComment()
         })
     },
 
