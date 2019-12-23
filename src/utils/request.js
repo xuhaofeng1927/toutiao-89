@@ -2,6 +2,7 @@
 import axios from 'axios'// 引入axios
 import router from '../router'// 引入路由实例对象
 import { Message } from 'element-ui'
+import JSONBig from 'json-bigint'
 
 // 请求拦截
 axios.interceptors.request.use(function (config) {
@@ -15,6 +16,15 @@ axios.interceptors.request.use(function (config) {
 }, function () {
   // 错误执行代码
 })
+
+// 后台数据 到达 响应拦截之前走的一个函数
+axios.defaults.transformResponse = [function (data) {
+  // return JSON.parse(data)  原来的JSon转字符串
+  let result = JSONBig.parse(data)
+  console.log(result)
+
+  return result// 使用大数字转换
+}]
 // 响应拦截
 
 axios.interceptors.response.use(function (res) {

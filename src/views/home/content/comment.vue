@@ -37,10 +37,10 @@ export default {
             url: '/comments/status',
             method: 'put',
             params: {
-              article_id: row.id
+              article_id: row.id.toString()
             },
             data: {
-              allow_comment: !row.comment_status // 再次取反修改boolern值
+              allow_comment: !row.comment_status // 再次取反修改boolern值返回数据中
             }
           }).then(result => {
             this.$message({
