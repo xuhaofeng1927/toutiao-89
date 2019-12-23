@@ -8,7 +8,7 @@ import Login from '../views/login'
 import Publish from '../views/home/content/publish'
 import Aarticles from '../views/home/content/articles'
 // import Comment from '../views/home/content/comment'
-import Material from '../views/home/content/material'
+// import Material from '../views/home/content/material'
 // fans
 import FansImg from '../views/home/fans/fansImg'
 import FansPaint from '../views/home/fans/fansPaint'
@@ -25,10 +25,15 @@ const routes = [
     path: '/home',
     component: Home,
     children: [
+
       {
         path: '',
-        redirect: '/home/publish'
+        redirect: '/home/homepage'
       },
+      {
+        path: 'homepage',
+        component: () => import('../views/home/homePage')// 按需加载
+      }, // 首页-默认页面
       // content
       {
         path: 'publish',
@@ -41,11 +46,11 @@ const routes = [
       {
         path: 'comment',
         component: () => import('../views/home/content/comment') // 按需加载
-      },
+      }, // 评论列表
       {
         path: 'material',
-        component: Material
-      },
+        component: () => import('../views/home/content/material') // 按需加载
+      }, // 素材列表
       // fans
       {
         path: 'fansImg',
