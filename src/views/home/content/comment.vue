@@ -1,11 +1,11 @@
 <template>
-  <el-card class="box-card" shadow="never">
+  <el-card class="box-card" shadow="never" body-style='padding: 0'>
     <!-- 面包屑 -->
     <breark-crumbs slot="header">
       <template slot="title">评论列表</template>
     </breark-crumbs>
     <!-- table表格 -->
-    <el-table :data="tableListData" stripe style="width: 100%" fit>
+    <el-table :data="tableListData" stripe style="width: 100% "  highlight-current-row >
       <el-table-column prop="title" label="标题" width="600"></el-table-column>
       <el-table-column :formatter="formatterJudge" prop="comment_status" label="评论状态"></el-table-column>
       <el-table-column prop="total_comment_count" label="总评论数"></el-table-column>
@@ -114,5 +114,5 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 </style>
