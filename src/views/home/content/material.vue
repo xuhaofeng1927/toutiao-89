@@ -82,7 +82,7 @@ export default {
       page: {
         total: 0, // 默认总条数
         currentPage: 1, // 默认当前页数，第一条页数
-        pageSize: 10 // 默认每页条数,好像默认就是10
+        pageSize: [10]// 默认每页条数,好像默认就是10
       },
       loading: false
     }
@@ -95,7 +95,7 @@ export default {
         params: {
           collect: this.activeName === 'collect', // 3， 判断boolern值来确定all或者collect
           page: this.page.currentPage,
-          per_page: this.page.pageSize
+          per_page: this.page.pageSize[0]
         }
       }).then(result => {
         // 获取图片的数据

@@ -43,7 +43,7 @@ export default {
       page: {
         total: 0, // 默认总条数
         currentPage: 1, // 默认当前页数，第一条页数
-        pageSize: 10 // 默认每页条数,好像默认就是10
+        pageSize: [10] // 默认每页条数,好像默认就是10
       }
     }
   },
@@ -81,7 +81,7 @@ export default {
         params: {
           response_type: 'comment',
           page: this.page.currentPage,
-          per_page: 10
+          per_page: this.page.pageSize[0]
         }
       }).then(result => {
         // 请求列表信息数据
