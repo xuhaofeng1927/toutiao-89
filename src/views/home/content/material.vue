@@ -4,10 +4,10 @@
     <breark-crumbs slot="header">
       <template slot="title">素材管理</template>
     </breark-crumbs>
-     <!-- 上传图片 -->
+    <!-- 上传图片 -->
     <div class="upload">
       <el-upload :http-request="uploadImg" :show-file-list="false" action>
-        <el-button type="primary" size="small">
+        <el-button type="primary" size="mini">
           上传
           <i class="el-icon-upload el-icon--right"></i>
         </el-button>
@@ -23,13 +23,17 @@
             </div>
             <el-row class="callget">
               <el-col :span="12">
-                <div class="i">
-                 <i class="el-icon-star-off"></i>
+                <div
+                  class="i"
+                  @click="ifcollect(item)"
+                  :style="{color: item.is_collected ? 'red' : ''}"
+                >
+                  <i class="el-icon-star-off"></i>
                 </div>
               </el-col>
               <el-col :span="12">
-                <div class="i">
-                   <i class="el-icon-delete"></i>
+                <div class="i" @click="delMaterial(item.id)">
+                  <i class="el-icon-delete"></i>
                 </div>
               </el-col>
             </el-row>
@@ -45,12 +49,16 @@
             </div>
             <el-row class="callget">
               <el-col :span="12">
-                <div class="i">
-                   <i class="el-icon-star-off"></i>
-                </div>、
+                <div
+                  class="i"
+                  @click="ifcollect(item)"
+                  :style="{color: item.is_collected ? 'red' : ''}"
+                >
+                  <i class="el-icon-star-off"></i>
+                </div>
               </el-col>
               <el-col :span="12">
-                <div class="i">
+                <div class="i" @click="delMaterial(item.id)">
                   <i class="el-icon-delete"></i>
                 </div>
               </el-col>
@@ -115,7 +123,7 @@ export default {
       // 重新获取数据
       this.getMaterial()
     },
-    // 上传图片数据
+    // 5,上传图片数据
     uploadImg (filedata) {
       this.loading = true // 打开进度条
       let form = new FormData() // 定义一个form对象
@@ -129,7 +137,35 @@ export default {
         this.loading = false // 关闭进度条
         this.getMaterial()
       })
+    },
+    // 6，是否收藏
+    ifcollect (item) {
+      this.$axios({
+        url: `/user/images/${item.id}`, // 修改参数需要添加id
+        method: 'put', // 修改请求方法put
+        data: {
+          collect: !item.is_collected // 将状态取反赋值给数据
+        }
+      }).then(() => {
+        this.getMaterial() // 重新获取数据
+      })
+    },
+    // 7,删除数据
+    delMaterial (id) {
+      this.$confirm('您确定要删除这张图片吗').then(() => {
+        this.$axios({
+          url: `/user/images/${id}`,
+          method: 'delete'
+        }).then(() => {
+          this.getMaterial()
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+        })
+      })
     }
+
   },
   // 2，实例创建后调用方法
   created () {
@@ -145,7 +181,7 @@ export default {
     position: absolute;
     z-index: 2;
     right: 30px;
-    top: 65px;
+    top: 76px;
   }
 }
 .img-list {
