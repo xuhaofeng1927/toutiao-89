@@ -81,7 +81,7 @@ export default {
         params: {
           response_type: 'comment',
           page: this.page.currentPage,
-          per_page: this.page.pageSize
+          per_page: 10
         }
       }).then(result => {
         // 请求列表信息数据
