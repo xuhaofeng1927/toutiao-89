@@ -6,7 +6,7 @@ import Login from '../views/login'
 // 二级路由引入
 // content
 import Publish from '../views/home/content/publish'
-import Aarticles from '../views/home/content/articles'
+// import Aarticles from '../views/home/content/articles'
 // import Comment from '../views/home/content/comment'
 // import Material from '../views/home/content/material'
 // fans
@@ -41,7 +41,7 @@ const routes = [
       },
       {
         path: 'articles',
-        component: Aarticles
+        component: () => import('../views/home/content/articles') // 按需加载
       },
       {
         path: 'comment',
