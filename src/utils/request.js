@@ -4,6 +4,7 @@ import router from '../router'// 引入路由实例对象
 import { Message } from 'element-ui'
 import JSONBig from 'json-bigint'
 
+axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0' // 设置基础地址
 // 请求拦截
 axios.interceptors.request.use(function (config) {
   // 成功执行代码
@@ -20,7 +21,7 @@ axios.interceptors.request.use(function (config) {
 // 后台数据 到达 响应拦截之前走的一个函数
 axios.defaults.transformResponse = [function (data) {
   // return JSON.parse(data)  原来的JSon转字符串
-  let result = JSONBig.parse(data)
+  let result = data ? JSONBig.parse(data) : {}
   console.log(result)
 
   return result// 使用大数字转换
