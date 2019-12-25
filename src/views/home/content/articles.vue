@@ -12,7 +12,7 @@
         </el-col>
         <el-col :span="22">
           <!-- <p>文章状态，0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除，不传为全部</p> -->
-          <el-radio-group v-model="formData.status">
+          <el-radio-group v-model="formData.status" @change="changeCondition">
             <!-- 全部这个5是默认的,在传参的时候判断一下 是不是5 如果是5 就传个null -->
             <el-radio :label="5">全部</el-radio>
             <el-radio :label="0">草稿</el-radio>
@@ -27,7 +27,7 @@
           <span>频道列表</span>
         </el-col>
         <el-col :span="22">
-          <el-select v-model="formData.channel_id" placeholder="请选择">
+          <el-select v-model="formData.channel_id" placeholder="请选择" @change="changeCondition">
             <el-option
               v-for="item in channelOptions"
               :key="item.id"
@@ -43,13 +43,15 @@
         </el-col>
         <el-col :span="22">
           <el-date-picker
+           @change="changeCondition"
+            value-format='yyyy-MM-dd'
             v-model="formData.dataValue"
             type="daterange"
             range-separator="-"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
+
           ></el-date-picker>
-          {{formData.dataValue}}
         </el-col>
       </el-row>
     </el-card>
@@ -71,16 +73,20 @@
               <div class="articles-text">
                 <span>{{item.title}}</span>
                 <el-tag class="tag" :type="item.status | transTypehint">{{item.status | tranStatus}}</el-tag>
-                <span class="date"> {{item.pubdate}}</span>
+                <span class="date">{{item.pubdate}}</span>
               </div>
             </el-col>
           </el-row>
         </el-col>
         <el-col :span="6">
-           <el-row class='right' type='flex' justify="end">
-               <span><i class="el-icon-edit"></i>修改</span>
-               <span><i class="el-icon-delete"></i> 删除</span>
-           </el-row>
+          <el-row class="right" type="flex" justify="end">
+            <span>
+              <i class="el-icon-edit"></i>修改
+            </span>
+            <span>
+              <i class="el-icon-delete"></i> 删除
+            </span>
+          </el-row>
         </el-col>
       </el-row>
     </el-card>
@@ -96,17 +102,15 @@ export default {
         status: 5, // 默认为5为选中全部， 状态
         channel_id: null, // 默认为空，频道
         dataValue: [] // 默认为空，后面接受参数，日期
-        // begin_pubdate: this.dataValue[0],
-        // end_pubdate: this.dataValue[1]
-
       },
       channelOptions: [], // 频道列表
-      defaultImg: require('../../../assets/bdlg.jpg'), // 默认图片地址
-      articlesList: []
+      defaultImg: require('../../../assets/bdlg.jpg'), // 3,默认图片地址
+      articlesList: [],
+      loading: false
     }
   },
   filters: {
-    // 转换状态
+    // 4,转换状态
     tranStatus: function (value) {
       switch (value) {
         // <!-- <p>文章状态，0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除，不传为全部</p> -->
@@ -138,7 +142,7 @@ export default {
     }
   },
   methods: {
-    // 获取文章频道
+    // 2,获取文章频道
     getChannel () {
       this.$axios({
         url: '/channels'
@@ -146,15 +150,31 @@ export default {
         this.channelOptions = result.data.channels
       })
     },
-    // 获取文章列表
-    getAticles () {
+    // 1,获取文章列表
+    getAticles (params) {
       this.$axios({
-        url: '/articles'
+        url: '/articles',
+        params // ES6 的写法
       }).then(result => {
         this.articlesList = result.data.results
       })
+    },
+    // 改变条件时
+    changeCondition () {
+      alert('开始请求了')
+      this.loading = true
+      let params = {
+        status: this.formData.status === 5 ? null : this.formData.status, // 疑问：为什么这里必须是nul它和空字符串有什么区别？
+        channel_id: this.formData.channel_id,
+        begin_pubdate: this.formData.dataValue.length ? this.formData.dataValue[0] : null, // Bug:没有写formData
+        end_pubdate: this.formData.dataValue.length > 1 ? this.formData.dataValue[1] : null
+      }
+      this.getAticles(params) // 传入参数重新获取数据
+      this.loading = false
+      alert('请求回来了，看看有问题吗')
     }
   },
+  // 实例创建后调用方法
   created () {
     this.getChannel()
     this.getAticles()
@@ -174,7 +194,7 @@ export default {
 .articles-under {
   margin-top: 20px;
   .articles-content {
-    padding-top:10px;
+    padding-top: 10px;
     height: 160px;
     border-bottom: 1px solid rgb(226, 226, 226);
     .articles-img {
@@ -197,17 +217,17 @@ export default {
       }
       .date {
         font-size: 12px;
-        color:rgb(143, 142, 142)
+        color: rgb(143, 142, 142);
       }
     }
     .right {
       padding: 15px 0;
-          span {
-              margin-left:8px;
-              font-size: 14px;
-              cursor: pointer;
-          }
+      span {
+        margin-left: 8px;
+        font-size: 14px;
+        cursor: pointer;
       }
+    }
   }
 }
 </style>
