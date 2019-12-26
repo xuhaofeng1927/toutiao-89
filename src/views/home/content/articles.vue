@@ -43,14 +43,13 @@
         </el-col>
         <el-col :span="22">
           <el-date-picker
-           @change="changeCondition"
-            value-format='yyyy-MM-dd'
+            @change="changeCondition"
+            value-format="yyyy-MM-dd"
             v-model="formData.dataValue"
             type="daterange"
             range-separator="-"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-
           ></el-date-picker>
         </el-col>
       </el-row>
@@ -89,6 +88,17 @@
           </el-row>
         </el-col>
       </el-row>
+      <!-- 分页栏 -->
+      <el-row type="flex" justify="center" style="height:80px" align="middle">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="page.total"
+          :page-sizes="page.pageSize"
+          :current-page="page.currentPage"
+          @current-change="cheagePage"
+        ></el-pagination>
+      </el-row>
     </el-card>
   </div>
 </template>
@@ -106,6 +116,11 @@ export default {
       channelOptions: [], // 频道列表
       defaultImg: require('../../../assets/bdlg.jpg'), // 3,默认图片地址
       articlesList: [],
+      page: {
+        total: 0, // 默认总页数
+        pageSize: [10], // 默认每条页数，
+        currentPage: 1 // 默认当前页数
+      },
       loading: false
     }
   },
@@ -157,22 +172,42 @@ export default {
         params // ES6 的写法
       }).then(result => {
         this.articlesList = result.data.results
+        this.page.total = result.data.total_count // 获取总页数
+        // this.page.currentPage = result.data.page // 获取当前页数
+        // this.page.pageSize = result.data.per_page // 获取每页页数
       })
     },
-    // 改变条件时
-    changeCondition () {
+    // 5,改变当前页
+    cheagePage (newPage) {
+      this.page.currentPage = newPage // 定义对象数据时一定不要忘了加对象page
+      this.getchangeCondition() // 重新加载数据
+    },
+    // 3，获取筛选条件
+    getchangeCondition () {
       alert('开始请求了')
       this.loading = true
       let params = {
         status: this.formData.status === 5 ? null : this.formData.status, // 疑问：为什么这里必须是nul它和空字符串有什么区别？
         channel_id: this.formData.channel_id,
-        begin_pubdate: this.formData.dataValue.length ? this.formData.dataValue[0] : null, // Bug:没有写formData
-        end_pubdate: this.formData.dataValue.length > 1 ? this.formData.dataValue[1] : null
+        begin_pubdate: this.formData.dataValue.length
+          ? this.formData.dataValue[0]
+          : null, // Bug:没有写formData
+        end_pubdate:
+          this.formData.dataValue.length > 1 ? this.formData.dataValue[1] : null,
+        // 传入当前页和页面页数的值
+        page: this.page.currentPage,
+        per_page: this.page.pageSize[0]
       }
       this.getAticles(params) // 传入参数重新获取数据
       this.loading = false
       alert('请求回来了，看看有问题吗')
+    },
+    // 4,改变条件时
+    changeCondition () {
+      this.page.currentPage = 1 // 默认回到当前为第一页
+      this.getchangeCondition()
     }
+
   },
   // 实例创建后调用方法
   created () {
