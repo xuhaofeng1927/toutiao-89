@@ -82,13 +82,13 @@
             <span>
               <i class="el-icon-edit"></i>修改
             </span>
-            <span>
+            <span @click="delAticles(item.id.toString())">
               <i class="el-icon-delete"></i> 删除
             </span>
           </el-row>
         </el-col>
       </el-row>
-      <!-- 分页栏 -->
+      <!--6， 分页栏 -->
       <el-row type="flex" justify="center" style="height:80px" align="middle">
         <el-pagination
           background
@@ -184,30 +184,42 @@ export default {
     },
     // 3，获取筛选条件
     getchangeCondition () {
-      alert('开始请求了')
+      // alert('开始请求了')
       this.loading = true
       let params = {
         status: this.formData.status === 5 ? null : this.formData.status, // 疑问：为什么这里必须是nul它和空字符串有什么区别？
         channel_id: this.formData.channel_id,
         begin_pubdate: this.formData.dataValue.length
           ? this.formData.dataValue[0]
-          : null, // Bug:没有写formData
+          : null, // Bug:丢失formData字段
         end_pubdate:
-          this.formData.dataValue.length > 1 ? this.formData.dataValue[1] : null,
+          this.formData.dataValue.length > 1
+            ? this.formData.dataValue[1]
+            : null,
         // 传入当前页和页面页数的值
         page: this.page.currentPage,
         per_page: this.page.pageSize[0]
       }
       this.getAticles(params) // 传入参数重新获取数据
       this.loading = false
-      alert('请求回来了，看看有问题吗')
+      // alert('请求回来了，看看有问题吗')
     },
     // 4,改变条件时
     changeCondition () {
       this.page.currentPage = 1 // 默认回到当前为第一页
       this.getchangeCondition()
+    },
+    delAticles (id) {
+      this.$confirm('您确定要删除这条数据🐎').then(() => {
+        this.$axios({
+          url: `/articles/${id}`,
+          method: 'delete'
+        }).then(result => {
+          // alert(1) 测试
+          this.changeCondition()
+        })
+      })
     }
-
   },
   // 实例创建后调用方法
   created () {
