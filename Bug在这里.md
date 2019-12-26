@@ -26,4 +26,10 @@ this.page.currentPage = newPage // 定义对象数据时一定不要忘了加对
 ```
 #### Error in v-on handler: "TypeError: Cannot read property 'length' of null"
 **翻译：** 无法正确读取属性
-**解决办法：**
+**解决办法：*
+#### button按钮添加事件时默认值问题
+```
+ <el-button type="primary" @click='publishAticle()'>发布</el-button>
+ <el-button plain @click='publishAticle(true)'>存入草稿</el-button>
+```
+不写括号代表有默认形参，加上括号代表为null==>false

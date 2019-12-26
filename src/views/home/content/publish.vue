@@ -30,8 +30,8 @@
           </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click='publishAticle'>发布</el-button>
-        <el-button plain @click='publishAticle'>存入草稿</el-button>
+        <el-button type="primary" @click='publishAticle(false)'>发布</el-button>
+        <el-button plain @click='publishAticle(true)'>存入草稿</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -79,10 +79,24 @@ export default {
       })
     },
     // 3，全局校验以及添加内容
-    publishAticle () {
+    publishAticle (draft) {
       this.$refs.articlesForm.validate((isOk) => {
         if (isOk) {
-          alert('校验成功')
+          this.$axios({
+            url: '/articles',
+            method: 'post',
+            params: {
+            //   draft: draft
+              draft
+            },
+            data: this.publishForm
+          }).then(result => {
+            // result.data.id
+            this.$message({
+              type: 'success',
+              message: '上传成功'
+            })
+          })
         }
       })
     }
