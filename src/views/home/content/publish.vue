@@ -69,6 +69,25 @@ export default {
       channelOptions: [] // 接收频道数据
     }
   },
+  // 监听传过来的路由地址参数$route（修改按钮传过来的）
+  watch: {
+    '$route': function (to, from) {
+      if (Object.keys(to.params).length) { // Object.keys(对象)将对象的属性遍历生成数组
+        // alert('修改') // 有参数修改
+      } else {
+        alert('发表文章') // 没有参数，发表文章
+        this.publishForm = {
+          title: '', // 文章标题
+          content: '', // 文章内容
+          cover: {
+            type: -1, // 图片状态
+            images: [] // 图片信息
+          },
+          channel_id: null // 频道列表
+        }
+      }
+    }
+  },
   methods: {
     // 2,获取文章频道
     getChannel () {
@@ -92,6 +111,7 @@ export default {
             data: this.publishForm
           }).then(result => {
             // result.data.id
+            this.$router.push('/home/articles')
             this.$message({
               type: 'success',
               message: '上传成功'

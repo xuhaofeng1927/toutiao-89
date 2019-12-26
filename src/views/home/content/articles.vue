@@ -57,7 +57,7 @@
     <!-- 此刻的class类名和上面的类名一样因为都是卡片 -->
     <el-card class="articles-under" shadow="never">
       <el-row slot="header">
-        <span>共找到1000条符合条件的内容</span>
+        <span>共找到{{page.total}}条符合条件的内容</span>
       </el-row>
       <el-row class="articles-content" v-for="item in articlesList" :key="item.id.toString()">
         <el-col :span="18">
@@ -79,7 +79,7 @@
         </el-col>
         <el-col :span="6">
           <el-row class="right" type="flex" justify="end">
-            <span>
+            <span @click='alterArticle(item.id.toString())'>
               <i class="el-icon-edit"></i>修改
             </span>
             <span @click="delAticles(item.id.toString())">
@@ -209,7 +209,7 @@ export default {
       this.page.currentPage = 1 // 默认回到当前为第一页
       this.getchangeCondition()
     },
-    // 删除文章数据
+    // 7，删除文章数据
     delAticles (id) {
       this.$confirm('您确定要删除这条数据🐎').then(() => {
         this.$axios({
@@ -224,6 +224,10 @@ export default {
           this.getchangeCondition()
         })
       })
+    },
+    // 8，修改文章页面（难点）
+    alterArticle (id) {
+      this.$router.push(`/home/publish/${id}`)
     }
   },
   // 实例创建后调用方法
