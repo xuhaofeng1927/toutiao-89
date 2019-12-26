@@ -22,7 +22,7 @@ axios.interceptors.request.use(function (config) {
 axios.defaults.transformResponse = [function (data) {
   // return JSON.parse(data)  原来的JSon转字符串
   let result = data ? JSONBig.parse(data) : {}
-  console.log(result)
+  // console.log(result)
 
   return result// 使用大数字转换
 }]

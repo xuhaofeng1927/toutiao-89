@@ -209,18 +209,19 @@ export default {
       this.page.currentPage = 1 // 默认回到当前为第一页
       this.getchangeCondition()
     },
+    // 删除文章数据
     delAticles (id) {
       this.$confirm('您确定要删除这条数据🐎').then(() => {
         this.$axios({
           url: `/articles/${id}`,
           method: 'delete'
-        }).then(result => {
+        }).then(() => {
           // alert(1) 测试
           this.$message({
             type: 'success',
             message: ' 删除成功'
           })
-          this.changeCondition()
+          this.getchangeCondition()
         })
       })
     }
