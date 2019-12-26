@@ -216,6 +216,10 @@ export default {
           method: 'delete'
         }).then(result => {
           // alert(1) 测试
+          this.$message({
+            type: 'success',
+            message: ' 删除成功'
+          })
           this.changeCondition()
         })
       })

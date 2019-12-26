@@ -33,7 +33,7 @@ axios.interceptors.response.use(function (res) {
   return res.data ? res.data : {} // 解决当data不存在时  then中读取数据报错问题
 }, function (error) {
   // 错误执行代码
-  console.dir(error)
+  // console.dir(error)
   let status = error.response.status // 获取状态
   let message = ''// 提示信息
 
