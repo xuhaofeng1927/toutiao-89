@@ -3,6 +3,7 @@
     <breark-crumbs slot="header">
       <template slot="title">发表内容</template>
     </breark-crumbs>
+    <!-- 1，快速构建表单结构 -->
     <el-form :label-position="labelPosition" label-width="80px" :model="publishForm">
       <el-form-item label="文章标题">
         <el-input v-model="publishForm.name"></el-input>
@@ -19,14 +20,14 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="频道类型">
-        <el-select v-model="value" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+         <el-select v-model="publishForm.channel_id" placeholder="请选择">
+            <el-option
+              v-for="item in channelOptions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary">发布</el-button>
@@ -45,32 +46,26 @@ export default {
         name: '',
         region: '',
         type: '',
-        radio: -1
+        radio: -1,
+        channel_id: null // 频道列表
       },
-      options: [
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '双皮奶'
-        },
-        {
-          value: '选项3',
-          label: '蚵仔煎'
-        },
-        {
-          value: '选项4',
-          label: '龙须面'
-        },
-        {
-          value: '选项5',
-          label: '北京烤鸭'
-        }
-      ],
+      channelOptions: [],
       value: ''
     }
+  },
+  methods: {
+    // 2,获取文章频道
+    getChannel () {
+      this.$axios({
+        url: '/channels'
+      }).then(result => {
+        this.channelOptions = result.data.channels
+      })
+    }
+  },
+  // 钩子函数实例创建后执行方法
+  created () {
+    this.getChannel() // 调用获取文章频道
   }
 }
 </script>
