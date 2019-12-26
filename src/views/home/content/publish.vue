@@ -63,7 +63,7 @@ export default {
         ],
         type: [],
         channel_id: [
-          { required: true, message: '频道列表不能为空' }
+          { required: true, message: '频道列表不能为空', trigger: 'blur' }
         ]
       },
       channelOptions: [] // 接收频道数据
@@ -75,7 +75,7 @@ export default {
       if (Object.keys(to.params).length) { // Object.keys(对象)将对象的属性遍历生成数组
         // alert('修改') // 有参数修改
       } else {
-        alert('发表文章') // 没有参数，发表文章
+        // alert('发表文章') // 没有参数，发表文章
         this.publishForm = {
           title: '', // 文章标题
           content: '', // 文章内容
@@ -97,33 +97,82 @@ export default {
         this.channelOptions = result.data.channels
       })
     },
-    // 3，全局校验以及添加内容
+    // 3，全局校验以及添加内容/修改内容
     publishAticle (draft) {
       this.$refs.articlesForm.validate((isOk) => {
         if (isOk) {
-          this.$axios({
-            url: '/articles',
-            method: 'post',
-            params: {
-            //   draft: draft
-              draft
-            },
-            data: this.publishForm
-          }).then(result => {
-            // result.data.id
-            this.$router.push('/home/articles')
-            this.$message({
-              type: 'success',
-              message: '上传成功'
-            })
-          })
+          let { Id } = this.$route.params
+          this.publishOrArticler(Id, draft)
+        //   if (Id) {
+        //     // id存在,修改文章
+        //     this.$axios({
+        //       url: `/articles/${Id}`,
+        //       method: 'put',
+        //       params: {
+        //         draft
+        //       },
+        //       data: this.publishForm
+        //     }).then(() => {
+        //       this.$router.push('/home/articles')
+        //       this.$message({
+        //         type: 'success',
+        //         message: '修改成功'
+        //       })
+        //     })
+        //   } else {
+        //     // id不存在,发布文章
+        //     this.$axios({
+        //       url: '/articles',
+        //       method: 'post',
+        //       params: {
+        //         //   draft: draft
+        //         draft
+        //       },
+        //       data: this.publishForm
+        //     }).then(() => {
+        //       this.$router.push('/home/articles')
+        //       this.$message({
+        //         type: 'success',
+        //         message: '上传成功'
+        //       })
+        //     })
+        //   }
         }
+      })
+    },
+    // id存在,修改文章 id不存在,发布文章
+    publishOrArticler (id, draft) {
+      this.$axios({
+        url: id ? `/articles/${id}` : '/articles',
+        method: id ? 'put' : 'post',
+        params: {
+          draft
+        },
+        data: this.publishForm
+      }).then(() => {
+        this.$router.push('/home/articles')
+        this.$message({
+          type: 'success',
+          message: id ? '修改成功' : '上传成功'
+        })
+      })
+    },
+    //  根据传过来的id值获取指定的文章信息
+    getalterArticle (Id) {
+      this.$axios({
+        url: `/articles/${Id}`
+      }).then(result => {
+        this.publishForm = result.data // 将获取到的内容传给表单数据
       })
     }
   },
   // 钩子函数实例创建后执行方法
   created () {
     this.getChannel() // 调用获取文章频道
+    let { Id } = this.$route.params
+    if (Id) {
+      this.getalterArticle(Id)
+    }
   }
 }
 </script>

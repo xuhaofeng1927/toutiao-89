@@ -36,7 +36,7 @@ const routes = [
       }, // 首页-默认页面
       // content
       {
-        path: 'publish/:id', // 定义动态路由参数  此规则只匹配修改文章
+        path: 'publish/:Id', // 定义动态路由参数  此规则只匹配修改文章
         component: () => import('../views/home/content/publish') // 按需加载
       },
       {
