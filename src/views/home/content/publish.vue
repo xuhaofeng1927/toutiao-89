@@ -9,7 +9,7 @@
         <el-input v-model="publishForm.title"></el-input>
       </el-form-item>
       <el-form-item label="文章内容" prop='content'>
-        <el-input v-model="publishForm.content"></el-input>
+        <quill-editor class="quill" v-model="publishForm.content" ></quill-editor>
       </el-form-item>
       <el-form-item label="文章封面" prop="type">
         <el-radio-group v-model="publishForm.cover.type">
@@ -177,5 +177,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang='less' scoped>
+.quill {
+  height: 300px;
+  margin-bottom: 100px;
+}
 </style>
