@@ -18,7 +18,7 @@
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>
         </el-radio-group>
-        {{publishForm.cover.images}}
+        <cover-images :imageslist="publishForm.cover.images"></cover-images>
       </el-form-item>
       <el-form-item label="频道类型" prop="channel_id">
          <el-select v-model="publishForm.channel_id" placeholder="请选择">
