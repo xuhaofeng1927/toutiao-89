@@ -1,15 +1,17 @@
 <template>
 <div class="container">
 <div class="imagescontent" v-for="(item,index) in imageslist" :key="index">
-      <img src="../../assets/img/pic_bg.png" alt="" title="点击上传封面头像">
+      <img :src="item?imageslist[index]:defaultImg" alt="" title="点击上传封面头像">
   </div>
 </div>
 
 </template>
 
 <script>
+import { request } from 'http'
 export default {
-  props: ['imageslist']
+  props: ['imageslist'],
+  defaultImg: request('../../assets/img/pic_bg.png')
 }
 </script>
 

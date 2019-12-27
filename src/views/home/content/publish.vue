@@ -12,7 +12,7 @@
         <quill-editor class="quill" v-model="publishForm.content" ></quill-editor>
       </el-form-item>
       <el-form-item label="文章封面" prop="type">
-        <el-radio-group v-model="publishForm.cover.type">
+        <el-radio-group v-model="publishForm.cover.type" @change="changeType">
           <el-radio :label="-1">自动</el-radio>
           <el-radio :label="0">无图</el-radio>
           <el-radio :label="1">单图</el-radio>
@@ -70,8 +70,9 @@ export default {
       channelOptions: [] // 接收频道数据
     }
   },
-  // 监听传过来的路由地址参数$route（修改按钮传过来的）
+
   watch: {
+    // 监听传过来的路由地址参数$route（修改按钮传过来的）
     '$route': function (to, from) {
       if (Object.keys(to.params).length) { // Object.keys(对象)将对象的属性遍历生成数组
         // alert('修改') // 有参数修改
@@ -87,17 +88,18 @@ export default {
           channel_id: null // 频道列表
         }
       }
-    },
-    'publishForm.cover.type': function () {
-      // alert(this.publishForm.cover.type)
-      if (this.publishForm.cover.type === 0 || this.publishForm.cover.type === -1) {
-        this.publishForm.cover.images = []
-      } else if (this.publishForm.cover.type === 1) {
-        this.publishForm.cover.images = ['']
-      } else if (this.publishForm.cover.type === 3) {
-        this.publishForm.cover.images = ['', '', '']
-      }
     }
+    // 监听this.publishForm.cover.type的值，值一变化，封面列表就变化
+    // 'publishForm.cover.type': function () {
+    //   // alert(this.publishForm.cover.type)
+    //   if (this.publishForm.cover.type === 0 || this.publishForm.cover.type === -1) {
+    //     this.publishForm.cover.images = []
+    //   } else if (this.publishForm.cover.type === 1) {
+    //     this.publishForm.cover.images = ['']
+    //   } else if (this.publishForm.cover.type === 3) {
+    //     this.publishForm.cover.images = ['', '', '']
+    //   }
+    // }
     // 'publishForm': {
     //   handler (type) {
     //   },
@@ -181,6 +183,16 @@ export default {
       }).then(result => {
         this.publishForm = result.data // 将获取到的内容传给表单数据
       })
+    },
+    // 监听this.publishForm.cover.type的值 时默认生成空字符串问题
+    changeType () {
+      if (this.publishForm.cover.type === 0 || this.publishForm.cover.type === -1) {
+        this.publishForm.cover.images = []
+      } else if (this.publishForm.cover.type === 1) {
+        this.publishForm.cover.images = ['']
+      } else if (this.publishForm.cover.type === 3) {
+        this.publishForm.cover.images = ['', '', '']
+      }
     }
   },
   // 钩子函数实例创建后执行方法
