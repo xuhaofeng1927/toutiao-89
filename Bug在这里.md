@@ -35,3 +35,14 @@ this.page.currentPage = newPage // 定义对象数据时一定不要忘了加对
 不写括号代表有默认形参，加上括号代表为null==>false
 
 ####  Object.keys(对象)将对象的属性遍历生成数组
+#### watch 监听深拷贝
+```
+{a:{ b:{ c:"张三" } }}
+watch: {
+    "a.b.c":function(){},
+     a:{ 
+       handler:function(){},
+       deep:true // handler和deep 为必须值
+     }
+}
+```

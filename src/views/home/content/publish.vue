@@ -18,6 +18,7 @@
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>
         </el-radio-group>
+        {{publishForm.cover.images}}
       </el-form-item>
       <el-form-item label="频道类型" prop="channel_id">
          <el-select v-model="publishForm.channel_id" placeholder="请选择">
@@ -86,7 +87,23 @@ export default {
           channel_id: null // 频道列表
         }
       }
+    },
+    'publishForm.cover.type': function () {
+      // alert(this.publishForm.cover.type)
+      if (this.publishForm.cover.type === 0 || this.publishForm.cover.type === -1) {
+        this.publishForm.cover.images = []
+      } else if (this.publishForm.cover.type === 1) {
+        this.publishForm.cover.images = ['']
+      } else if (this.publishForm.cover.type === 3) {
+        this.publishForm.cover.images = ['', '', '']
+      }
     }
+    // 'publishForm': {
+    //   handler (type) {
+    //   },
+    //   deep: true
+    // }
+
   },
   methods: {
     // 2,获取文章频道
