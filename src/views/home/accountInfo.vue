@@ -4,7 +4,7 @@
     <breark-crumbs slot="header">
       <template slot="title">账户信息</template>
     </breark-crumbs>
-    <el-upload class="head-upload" action :show-file-list="false">
+    <el-upload class="head-upload" action :show-file-list="false" :http-request="uploadImg">
       <img :src="accountInfoForm.photo?accountInfoForm.photo:defaultphoto" alt />
     </el-upload>
     <el-form class="accountInfoForm"
@@ -91,6 +91,23 @@ export default {
       }).then(result => {
         this.accountInfoForm = result.data
       })
+    },
+    // 上传头像
+    uploadImg (params) {
+      let form = new FormData()
+      form.append('photo', params.file)
+      this.$axios({
+        url: '/user/photo',
+        method: 'patch',
+        data: form
+      }).then(result => {
+        this.accountInfoForm.photo = result.data.photo
+        this.$message({
+          type: 'success',
+          message: '上传成功'
+
+        })
+      })
     }
   },
   created () {
@@ -112,6 +129,7 @@ export default {
   }
   .head-upload {
     position: absolute;
+    z-index: 2;
     right: 300px;
     img {
       width: 200px;
