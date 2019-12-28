@@ -57,6 +57,7 @@ export default {
     border: 1px solid red;
     width: 200px;
     height: 200px;
+    padding: 10px;
     img {
       width: 100%;
       height: 100%;
