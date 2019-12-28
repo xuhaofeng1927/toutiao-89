@@ -5,7 +5,7 @@
       <template slot="title">账户信息</template>
     </breark-crumbs>
     <el-upload class="head-upload" action :show-file-list="false">
-      <img src="../../assets/img/header.jpg" alt />
+      <img :src="accountInfoForm.photo?accountInfoForm.photo:defaultphoto" alt />
     </el-upload>
     <el-form class="accountInfoForm"
       label-position="left"
@@ -17,7 +17,7 @@
         <el-input v-model="accountInfoForm.name"></el-input>
       </el-form-item>
       <el-form-item label="个人签名">
-        <el-input v-model="accountInfoForm.signature"></el-input>
+        <el-input v-model="accountInfoForm.intro"></el-input>
       </el-form-item>
       <el-form-item label="邮件">
         <el-input v-model="accountInfoForm.email"></el-input>
@@ -33,19 +33,35 @@
 export default {
   data () {
     return {
+      defaultphoto: require('../../assets/img/header.jpg'),
       accountInfoForm: {
         name: '', // 用户名
-        signature: '', // 个人签名
+        intro: '', // 个人签名
         email: '', // 邮箱
-        mobile: '' // 手机号
+        mobile: '', // 手机号
+        photo: '' // 头像
       },
       InfoFormRule: {
         name: [], // 用户名
-        signature: [], // 个人签名
+        intro: [], // 个人签名
         email: [], // 邮箱
-        mobile: [] // 手机号
+        mobile: [], // 手机号
+        photo: [] // 头像
       }
     }
+  },
+  methods: {
+    // 获取个人账户信息
+    getAccountInfo () {
+      this.$axios({
+        url: '/user/profile'
+      }).then(result => {
+        this.accountInfoForm = result.data
+      })
+    }
+  },
+  created () {
+    this.getAccountInfo()
   }
 }
 </script>
@@ -55,6 +71,7 @@ export default {
     .accountInfoForm {
         margin-top:60px;
         margin-left:50px;
+        position: relative;
     }
   min-height: 100vh;
   .el-input {
