@@ -18,7 +18,9 @@
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>
         </el-radio-group>
-        <cover-images :imageslist="publishForm.cover.images"></cover-images>
+        <!-- 将imageslist属性传递给子组件 -->
+        <!-- 接收其子元素<cover-images>传过来的值（imgUrl） -->
+        <cover-images :imageslist="publishForm.cover.images" @aginReplaceImage='getAginReplaceImage'></cover-images>
       </el-form-item>
       <el-form-item label="频道类型" prop="channel_id">
          <el-select v-model="publishForm.channel_id" placeholder="请选择">
@@ -159,7 +161,7 @@ export default {
         }
       })
     },
-    // id存在,修改文章 id不存在,发布文章
+    // 5,id存在,修改文章 id不存在,发布文章
     publishOrArticler (id, draft) {
       this.$axios({
         url: id ? `/articles/${id}` : '/articles',
@@ -176,7 +178,7 @@ export default {
         })
       })
     },
-    //  根据传过来的id值获取指定的文章信息
+    //  4,根据传过来的id值获取指定的文章信息
     getalterArticle (Id) {
       this.$axios({
         url: `/articles/${Id}`
@@ -184,7 +186,7 @@ export default {
         this.publishForm = result.data // 将获取到的内容传给表单数据
       })
     },
-    // 监听this.publishForm.cover.type的值 时默认生成空字符串问题
+    // 6,监听this.publishForm.cover.type的值 时默认生成空字符串问题
     changeType () {
       if (this.publishForm.cover.type === 0 || this.publishForm.cover.type === -1) {
         this.publishForm.cover.images = []
@@ -193,6 +195,20 @@ export default {
       } else if (this.publishForm.cover.type === 3) {
         this.publishForm.cover.images = ['', '', '']
       }
+    },
+    // 7，接收其子元素<cover-images>传过来的值（imgUrl）执行方法
+    getAginReplaceImage (imgUrl, index) {
+      // alert(imgUrl) // 接收图片成功，
+      // this.publishForm.cover.images = this.publishForm.cover.images.map((item, i) => {
+      //   if (i === index) {
+      //     return imgUrl
+      //   } else {
+      //     return item
+      //   }
+      // })
+      // 化简为以下代码,箭头函数简写为一行  ES6
+      this.publishForm.cover.images = this.publishForm.cover.images.map((item, i) => i === index ? imgUrl : item)
+      // alert(index) // 接受图片下标成功
     }
   },
   // 钩子函数实例创建后执行方法
