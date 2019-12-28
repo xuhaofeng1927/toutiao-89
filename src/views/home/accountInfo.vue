@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import evenBus from '../../utils/evenBus'
 export default {
   data () {
     return {
@@ -48,7 +49,8 @@ export default {
       InfoFormRule: {
         name: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 2, max: 7, message: '用户名最少为两个字节' }
+          { min: 2, message: '用户名最少为两个字节' },
+          { max: 10, message: '用户名最多为10个字节' }
         ], // 用户名
         intro: [
           { required: true, message: '请输入内容', trigger: 'blur' }
@@ -90,9 +92,10 @@ export default {
         url: '/user/profile'
       }).then(result => {
         this.accountInfoForm = result.data
+        evenBus.$emit('synchronization') // 定义一个自定义事件
       })
     },
-    // 上传头像
+    // 3,上传头像
     uploadImg (params) {
       let form = new FormData()
       form.append('photo', params.file)
@@ -102,6 +105,7 @@ export default {
         data: form
       }).then(result => {
         this.accountInfoForm.photo = result.data.photo
+        evenBus.$emit('synchronization') // 定义一个自定义事件
         this.$message({
           type: 'success',
           message: '上传成功'

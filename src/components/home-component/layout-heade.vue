@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import evenBus from '../../utils/evenBus'
 export default {
   data () {
     return {
@@ -43,14 +44,20 @@ export default {
   created () {
     // let token = window.localStorage.getItem('user-token') // 获取本地存储中的地址
     // console.log(token)
-
-    this.$axios({
-      url: '/user/profile'
-    }).then(result => {
-      this.personinfo = result.data
+    this.getheadInfo()
+    // 监听传过来的自定义事件
+    evenBus.$on('synchronization', () => {
+      this.getheadInfo()
     })
   },
   methods: {
+    getheadInfo () {
+      this.$axios({
+        url: '/user/profile'
+      }).then(result => {
+        this.personinfo = result.data
+      })
+    },
     handleCommand (command) {
       if (command === 'logout') {
         window.localStorage.removeItem('user-token')// 删除令牌
