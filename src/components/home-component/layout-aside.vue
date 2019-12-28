@@ -29,7 +29,7 @@
         <el-menu-item index='/home/fansGen'>粉丝概况</el-menu-item>
         <el-menu-item index='/home/fansList'>粉丝列表</el-menu-item>
       </el-submenu>
-      <el-menu-item>账户信息</el-menu-item>
+      <el-menu-item index='/home/accountInfo'>账户信息</el-menu-item>
     </el-menu>
   </div>
 </template>

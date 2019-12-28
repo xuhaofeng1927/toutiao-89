@@ -25,7 +25,7 @@
       </el-row>
     </el-tab-pane>
     <el-tab-pane label="上传图片" name="upload">
-      <el-upload class="avatar-uploader" :http-request="uploadImg" :show-file-list="false" action>
+      <el-upload class="avatar-uploader" :http-request="uploadImg" :show-file-list="false" action list-type="picture-card">
         <i class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
     </el-tab-pane>
@@ -73,7 +73,7 @@ export default {
       //   需要将url地址传出去  子传父 $emit 自定义事件 => 携带参数传递给其父元素<cover-images>
       this.$emit('selectImage', url) // 自定义事件名这里不再强制小写
     },
-    // 上传图片假方法，fileData 为上传文件对象，
+    // 5,上传图片假方法，fileData 为上传文件对象，
     uploadImg (fileData) {
       alert(fileData.file)
       let data = new FormData()

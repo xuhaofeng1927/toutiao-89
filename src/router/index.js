@@ -71,6 +71,11 @@ const routes = [
       {
         path: 'fansList',
         component: FansList
+      },
+      // 账户信息
+      {
+        path: 'accountInfo',
+        component: () => import('../views/home/accountInfo') // 按需加载
       }
     ]
   },
