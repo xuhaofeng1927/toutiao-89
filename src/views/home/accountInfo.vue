@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import evenBus from '../../utils/evenBus'
 export default {
   data () {
     return {
@@ -92,7 +91,7 @@ export default {
         url: '/user/profile'
       }).then(result => {
         this.accountInfoForm = result.data
-        evenBus.$emit('synchronization') // 定义一个自定义事件
+        this.$evenBus.$emit('synchronization') // 定义一个自定义事件
       })
     },
     // 3,上传头像
@@ -105,7 +104,7 @@ export default {
         data: form
       }).then(result => {
         this.accountInfoForm.photo = result.data.photo
-        evenBus.$emit('synchronization') // 定义一个自定义事件
+        this.$evenBus.$emit('synchronization') // 定义一个自定义事件
         this.$message({
           type: 'success',
           message: '上传成功'

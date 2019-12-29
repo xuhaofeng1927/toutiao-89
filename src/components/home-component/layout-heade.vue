@@ -4,7 +4,7 @@
     <!-- 左侧 -->
     <el-col class="left" :span="6">
       <!-- 左侧图标 -->
-      <i class="el-icon-s-unfold"></i>
+      <i  @click='changeoverbtn' :class="{'el-icon-s-unfold':changeover,'el-icon-s-fold':!changeover}" ></i>
       <span class="title">江苏传智播客教育科技股份有限公司</span>
     </el-col>
     <!-- 右侧 -->
@@ -18,7 +18,7 @@
         <el-dropdown trigger="click" @command="handleCommand">
         <!-- handleCommand 一个方法名 -->
           <!-- <span>山隔壁还是山</span> -->
-          <span class="el-dropdown-link">{{personinfo.name}} <i class="el-icon-arrow-down el-icon--right"></i> </span>
+          <span class="el-dropdown-link">{{personinfo.name}} <i class="el-icon-caret-bottom"></i> </span>
           <!-- 下拉菜单  具名插槽 -->
           <el-dropdown-menu slot="dropdown">
             <!-- 下拉内容 -->
@@ -33,12 +33,12 @@
 </template>
 
 <script>
-import evenBus from '../../utils/evenBus'
 export default {
   data () {
     return {
       personinfo: {},
-      defaultImg: require('../../assets/img/header.jpg')
+      defaultImg: require('../../assets/img/header.jpg'),
+      changeover: false
     }
   },
   created () {
@@ -46,7 +46,7 @@ export default {
     // console.log(token)
     this.getheadInfo()
     // 监听传过来的自定义事件
-    evenBus.$on('synchronization', () => {
+    this.$evenBus.$on('synchronization', () => {
       this.getheadInfo()
     })
   },
@@ -59,12 +59,18 @@ export default {
       })
     },
     handleCommand (command) {
-      if (command === 'logout') {
+      if (command === 'perInfo') {
+        this.$router.push('/home/accountInfo')
+      } else if (command === 'logout') {
         window.localStorage.removeItem('user-token')// 删除令牌
         this.$router.push('/login')// 跳转登录
       } else if (command === 'gitPath') {
         location.href = 'https://github.com/xuhaofeng1927/toutiao-89/commits/master'
       }
+    },
+    changeoverbtn () {
+      this.changeover = !this.changeover
+      this.$evenBus.$emit('changebin') // 公共事件监听，i 标签el-icon-s-fold
     }
   }
 }
