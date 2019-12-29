@@ -13,7 +13,7 @@ import Login from '../views/login'
 import FansImg from '../views/home/fans/fansImg'
 import FansPaint from '../views/home/fans/fansPaint'
 import FansGen from '../views/home/fans/fansGen'
-import FansList from '../views/home/fans/fansList'
+// import FansList from '../views/home/fans/fansList'
 Vue.use(VueRouter)
 
 const routes = [
@@ -68,10 +68,10 @@ const routes = [
         path: 'fansGen',
         component: FansGen
       },
-      {
-        path: 'fansList',
-        component: FansList
-      },
+      // {
+      //   path: 'fansList',
+      //   component: FansList
+      // },
       // 账户信息
       {
         path: 'accountInfo',
@@ -82,15 +82,11 @@ const routes = [
   {
     path: '/login',
     component: Login
+  },
+  {
+    path: '*',
+    component: () => import('../views/404.vue')
   }
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
 ]
 
 const router = new VueRouter({

@@ -215,9 +215,7 @@ export default {
   created () {
     this.getChannel() // 调用获取文章频道
     let { Id } = this.$route.params
-    if (Id) {
-      this.getalterArticle(Id)
-    }
+    Id && this.getalterArticle(Id)
   }
 }
 </script>
