@@ -158,24 +158,22 @@ export default {
   },
   methods: {
     // 2,获取文章频道
-    getChannel () {
-      this.$axios({
+    async getChannel () {
+      let result = await this.$axios({
         url: '/channels'
-      }).then(result => {
-        this.channelOptions = result.data.channels
       })
+      this.channelOptions = result.data.channels
     },
     // 1,获取文章列表
-    getAticles (params) {
-      this.$axios({
+    async getAticles (params) {
+      let result = await this.$axios({
         url: '/articles',
         params // ES6 的写法
-      }).then(result => {
-        this.articlesList = result.data.results
-        this.page.total = result.data.total_count // 获取总页数
-        // this.page.currentPage = result.data.page // 获取当前页数
-        // this.page.pageSize = result.data.per_page // 获取每页页数
       })
+      this.articlesList = result.data.results
+      this.page.total = result.data.total_count // 获取总页数
+      // this.page.currentPage = result.data.page // 获取当前页数
+      // this.page.pageSize = result.data.per_page // 获取每页页数
     },
     // 5,改变当前页
     cheagePage (newPage) {
@@ -210,20 +208,18 @@ export default {
       this.getchangeCondition()
     },
     // 7，删除文章数据
-    delAticles (id) {
-      this.$confirm('您确定要删除这条数据🐎').then(() => {
-        this.$axios({
-          url: `/articles/${id}`,
-          method: 'delete'
-        }).then(() => {
-          // alert(1) 测试
-          this.$message({
-            type: 'success',
-            message: ' 删除成功'
-          })
-          this.getchangeCondition()
-        })
+    async delAticles (id) {
+      await this.$confirm('您确定要删除这条数据🐎')
+      await this.$axios({
+        url: `/articles/${id}`,
+        method: 'delete'
       })
+      // alert(1) 测试
+      this.$message({
+        type: 'success',
+        message: ' 删除成功'
+      })
+      this.getchangeCondition()
     },
     // 8，修改文章页面（难点）
     alterArticle (id) {

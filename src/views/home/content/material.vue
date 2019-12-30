@@ -97,20 +97,19 @@ export default {
   },
   methods: {
     // 1,获取图片数据
-    getMaterial () {
-      this.$axios({
+    async getMaterial () {
+      let result = await this.$axios({
         url: '/user/images',
         params: {
           collect: this.activeName === 'collect', // 3， 判断boolern值来确定all或者collect
           page: this.page.currentPage,
           per_page: this.page.pageSize[0]
         }
-      }).then(result => {
-        // 获取图片的数据
-        this.list = result.data.results
-        // 获取图片的总页数
-        this.page.total = result.data.total_count
       })
+      // 获取图片的数据
+      this.list = result.data.results
+      // 获取图片的总页数
+      this.page.total = result.data.total_count
     },
     // tab切换事件
     handleClick () {
@@ -124,45 +123,41 @@ export default {
       this.getMaterial()
     },
     // 5,上传图片数据
-    uploadImg (filedata) {
+    async uploadImg (filedata) {
       this.loading = true // 打开进度条
       let form = new FormData() // 定义一个form对象
       form.append('image', filedata.file) // 添加文件到formData
-      this.$axios({
+      await this.$axios({
         method: 'post',
         url: '/user/images',
         data: form // formData数据
-      }).then(result => {
-        //   说明已经上传成功了一张图片
-        this.loading = false // 关闭进度条
-        this.getMaterial()
       })
+      //   说明已经上传成功了一张图片
+      this.loading = false // 关闭进度条
+      this.getMaterial()
     },
     // 6，是否收藏
-    ifcollect (item) {
-      this.$axios({
+    async ifcollect (item) {
+      await this.$axios({
         url: `/user/images/${item.id}`, // 修改参数需要添加id
         method: 'put', // 修改请求方法put
         data: {
           collect: !item.is_collected // 将状态取反赋值给数据
         }
-      }).then(() => {
-        this.getMaterial() // 重新获取数据
       })
+      this.getMaterial() // 重新获取数据
     },
     // 7,删除数据
-    delMaterial (id) {
-      this.$confirm('您确定要删除这张图片吗').then(() => {
-        this.$axios({
-          url: `/user/images/${id}`,
-          method: 'delete'
-        }).then(() => {
-          this.getMaterial()
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          })
-        })
+    async delMaterial (id) {
+      await this.$confirm('您确定要删除这张图片吗')
+      await this.$axios({
+        url: `/user/images/${id}`,
+        method: 'delete'
+      })
+      this.getMaterial()
+      this.$message({
+        message: '删除成功',
+        type: 'success'
       })
     }
 

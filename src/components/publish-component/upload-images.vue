@@ -47,20 +47,19 @@ export default {
   },
   methods: {
     // 2，获取素材列表
-    getMaterial () {
-      this.$axios({
+    async getMaterial () {
+      let result = await this.$axios({
         url: '/user/images',
         params: {
           collect: false, // 3， 判断boolern值来确定all或者collect
           page: this.page.currentPage,
           per_page: this.page.pageSize[0]
         }
-      }).then(result => {
-        // 获取图片的数据
-        this.list = result.data.results
-        // 获取图片的总页数
-        this.page.total = result.data.total_count
       })
+      // 获取图片的数据
+      this.list = result.data.results
+      // 获取图片的总页数
+      this.page.total = result.data.total_count
     },
     //  3，分页点击改变页数事件
     cheagePage (newPage) {
@@ -74,19 +73,16 @@ export default {
       this.$emit('selectImage', url) // 自定义事件名这里不再强制小写
     },
     // 5,上传图片假方法，fileData 为上传文件对象，
-    uploadImg (fileData) {
-      alert(fileData.file)
+    async uploadImg (fileData) {
       let data = new FormData()
       data.append('image', fileData.file)
-      debugger
-      this.$axios({
+      let result = await this.$axios({
         url: '/user/images',
         method: 'post',
         data
-      }).then(result => {
-        //   需要将url地址传出去  子传父 $emit 自定义事件 => 携带参数传递给其父元素<cover-images>
-        this.$emit('selectImage', result.data.url) // 再次将上传的图片数据传过去
       })
+      //   需要将url地址传出去  子传父 $emit 自定义事件 => 携带参数传递给其父元素<cover-images>
+      this.$emit('selectImage', result.data.url) // 再次将上传的图片数据传过去
     }
   },
   created () {

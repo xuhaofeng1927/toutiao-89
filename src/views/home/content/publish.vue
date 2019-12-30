@@ -111,12 +111,11 @@ export default {
   },
   methods: {
     // 2,获取文章频道
-    getChannel () {
-      this.$axios({
+    async getChannel () {
+      let result = await this.$axios({
         url: '/channels'
-      }).then(result => {
-        this.channelOptions = result.data.channels
       })
+      this.channelOptions = result.data.channels
     },
     // 3，全局校验以及添加内容/修改内容
     publishAticle (draft) {
@@ -124,67 +123,31 @@ export default {
         if (isOk) {
           let { Id } = this.$route.params
           this.publishOrArticler(Id, draft)
-        //   if (Id) {
-        //     // id存在,修改文章
-        //     this.$axios({
-        //       url: `/articles/${Id}`,
-        //       method: 'put',
-        //       params: {
-        //         draft
-        //       },
-        //       data: this.publishForm
-        //     }).then(() => {
-        //       this.$router.push('/home/articles')
-        //       this.$message({
-        //         type: 'success',
-        //         message: '修改成功'
-        //       })
-        //     })
-        //   } else {
-        //     // id不存在,发布文章
-        //     this.$axios({
-        //       url: '/articles',
-        //       method: 'post',
-        //       params: {
-        //         //   draft: draft
-        //         draft
-        //       },
-        //       data: this.publishForm
-        //     }).then(() => {
-        //       this.$router.push('/home/articles')
-        //       this.$message({
-        //         type: 'success',
-        //         message: '上传成功'
-        //       })
-        //     })
-        //   }
         }
       })
     },
     // 5,id存在,修改文章 id不存在,发布文章
-    publishOrArticler (id, draft) {
-      this.$axios({
+    async publishOrArticler (id, draft) {
+      await this.$axios({
         url: id ? `/articles/${id}` : '/articles',
         method: id ? 'put' : 'post',
         params: {
           draft
         },
         data: this.publishForm
-      }).then(() => {
-        this.$router.push('/home/articles')
-        this.$message({
-          type: 'success',
-          message: id ? '修改成功' : '上传成功'
-        })
+      })
+      this.$router.push('/home/articles')
+      this.$message({
+        type: 'success',
+        message: id ? '修改成功' : '上传成功'
       })
     },
     //  4,根据传过来的id值获取指定的文章信息
-    getalterArticle (Id) {
-      this.$axios({
+    async getalterArticle (Id) {
+      let result = await this.$axios({
         url: `/articles/${Id}`
-      }).then(result => {
-        this.publishForm = result.data // 将获取到的内容传给表单数据
       })
+      this.publishForm = result.data // 将获取到的内容传给表单数据
     },
     // 6,监听this.publishForm.cover.type的值 时默认生成空字符串问题
     changeType () {
