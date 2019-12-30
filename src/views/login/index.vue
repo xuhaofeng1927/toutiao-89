@@ -62,21 +62,17 @@ export default {
   },
   methods: {
     submitForm () {
-      this.$refs.myForm.validate(isOk => {
+      this.$refs.myForm.validate(async isOk => {
         if (isOk) {
           // console.log('前端校验成功，请前往后端请求代码')
-          this.$axios({
+          let result = await this.$axios({
             url: '/authorizations',
             method: 'post',
             data: this.ruleForm
           })
-            .then(result => {
-              // console.log(result.data.token)
-              // 缓存令牌
-              window.localStorage.setItem('user-token', result.data.token)
-              // 成功跳转到主页
-              this.$router.push('/')
-            })
+          window.localStorage.setItem('user-token', result.data.token)
+          // 成功跳转到主页
+          this.$router.push('/')
         } else {
           if (this.ruleForm.mobile === '' || this.ruleForm.code === '') { this.$message.error('手机号或验证码不能为空') }
         }

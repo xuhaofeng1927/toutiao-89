@@ -49,46 +49,42 @@ export default {
   },
   methods: {
     // 4，打开/关闭评论
-    openOrclose (row) {
+    async openOrclose (row) {
       // row 当前行数据
       let messStatus = row.comment_status ? '关闭' : '打开' // 根据状态取反
-      this.$confirm(`您是否确定要${messStatus}评论吗`) // primise
-        .then(() => {
-          // alert(1)
-          this.$axios({
-            url: '/comments/status',
-            method: 'put',
-            params: {
-              article_id: row.id.toString()
-            }, // 5，JSONBig 大数字转换
-            data: {
-              allow_comment: !row.comment_status // 再次取反修改boolern值返回数据中
-            }
-          }).then(result => {
-            this.$message({
-              type: 'success',
-              message: '操作成功'
-            })
-            this.getComment()
-          })
-        })
+      await this.$confirm(`您是否确定要${messStatus}评论吗`) // primise
+      // alert(1)
+      await this.$axios({
+        url: '/comments/status',
+        method: 'put',
+        params: {
+          article_id: row.id.toString()
+        }, // 5，JSONBig 大数字转换
+        data: {
+          allow_comment: !row.comment_status // 再次取反修改boolern值返回数据中
+        }
+      })
+      this.$message({
+        type: 'success',
+        message: '操作成功'
+      })
+      this.getComment()
     },
 
     // 1，获取评论数据
-    getComment () {
-      this.$axios({
+    async getComment () {
+      let result = await this.$axios({
         url: '/articles',
         params: {
           response_type: 'comment',
           page: this.page.currentPage,
           per_page: this.page.pageSize[0]
         }
-      }).then(result => {
-        // 请求列表信息数据
-        this.tableListData = result.data.results
-        // 8，请求总页数数据
-        this.page.total = result.data.total_count
       })
+      // 请求列表信息数据
+      this.tableListData = result.data.results
+      // 8，请求总页数数据
+      this.page.total = result.data.total_count
     },
     // 9， 改变页数事件
     cheagePage (newPage) {

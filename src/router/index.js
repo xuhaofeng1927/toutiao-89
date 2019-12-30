@@ -12,8 +12,8 @@ import Login from '../views/login'
 // fans
 import FansImg from '../views/home/fans/fansImg'
 import FansPaint from '../views/home/fans/fansPaint'
-import FansGen from '../views/home/fans/fansGen'
-// import FansList from '../views/home/fans/fansList'
+// import FansGen from '../views/home/fans/fansGen'
+import FansList from '../views/home/fans/fansList'
 Vue.use(VueRouter)
 
 const routes = [
@@ -64,14 +64,14 @@ const routes = [
         path: 'fansPaint',
         component: FansPaint
       },
-      {
-        path: 'fansGen',
-        component: FansGen
-      },
       // {
-      //   path: 'fansList',
-      //   component: FansList
+      //   path: 'fansGen',
+      //   component: FansGen
       // },
+      {
+        path: 'fansList',
+        component: FansList
+      },
       // 账户信息
       {
         path: 'accountInfo',

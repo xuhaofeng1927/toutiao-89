@@ -51,12 +51,11 @@ export default {
     })
   },
   methods: {
-    getheadInfo () {
-      this.$axios({
+    async getheadInfo () {
+      let result = await this.$axios({
         url: '/user/profile'
-      }).then(result => {
-        this.personinfo = result.data
       })
+      this.personinfo = result.data
     },
     handleCommand (command) {
       if (command === 'perInfo') {
